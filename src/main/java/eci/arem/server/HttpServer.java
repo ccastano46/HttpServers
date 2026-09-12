@@ -24,11 +24,13 @@ public class HttpServer {
 
             boolean isFirstLine = true;
             String URIstr = "";
+            String method = "";
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 if (isFirstLine) {
-                    URIstr = inputLine.split(" ")[1];
-
+                    method = inputLine.split(" ")[0];
+                    if (!method.equals("GET")) URIstr = "/methodNotAllowed";
+                    else URIstr = inputLine.split(" ")[1];
                     isFirstLine = false;
                 }
 
@@ -41,8 +43,8 @@ public class HttpServer {
             Map<String,byte[]> response = output(URIstr);
             out.write(response.get("headers"));
             out.write(response.get("body"));
-            out.flush();
 
+            out.flush();
             out.close();
             in.close();
             clientSocket.close();
@@ -80,6 +82,11 @@ public class HttpServer {
             output = "HTTP/1.1 404 Not Found\r\n"
                     + "Content-Type: application/json\r\n"
                     + "Content-Length: " + contentLength + end;
+        } else if(path.equals("/methodNotAllowed")) {
+            output = "HTTP/1.1 405 Method Not Allowed\r\n"
+                    + "Content-Type: application/json\r\n"
+                    + "Allow: GET\r\n"
+                    + "Content-Length: " + contentLength + end;
         } else {
             output = "HTTP/1.1 200 OK\r\n"
                     + "Content-Type: " + getFileType(path) + "\r\n"
@@ -101,7 +108,11 @@ public class HttpServer {
                 strBody = "{\"mensaje\":\"Goodbye World\"}";
                 body = strBody.getBytes(StandardCharsets.UTF_8);
 
-            }else if(cleanPath.equals("/")){
+            } else if(cleanPath.equals("/methodNotAllowed")){
+                strBody = "{\"mensaje\":\"Bad request: method not allowed\"}";
+                body = strBody.getBytes(StandardCharsets.UTF_8);
+            }
+            else if(cleanPath.equals("/")){
                 cleanPath = "/index.html";
                 body = getFileBytes(cleanPath);
             } else {
