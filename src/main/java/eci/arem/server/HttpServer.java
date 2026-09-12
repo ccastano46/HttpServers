@@ -42,7 +42,14 @@ public class HttpServer {
                         + "Content-Type: application/json\r\n\r\n"
                         + "{\"mensaje\":\"Hello World\"" + queryStr + "\"}";
 
-            } else {
+            } else if (URIstr.startsWith("/shutdown")){
+                running = false;
+                output = "HTTP/1.1 200 OK\r\n"
+                        + "Content-Type: application/json\r\n\r\n"
+                        + "{\"mensaje\":\"Goodbye World\"}";
+            }
+
+            else {
 
                 output = "HTTP/1.1 200 OK\r\n"
                         + "Content-Type: text/html\r\n\r\n"
