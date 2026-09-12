@@ -2,18 +2,23 @@ package eci.arem.server;
 
 import java.net.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HttpServer {
+    static boolean running = true;
 
     public static void main(String[] args) throws IOException, URISyntaxException {
         ServerSocket serverSocket = new ServerSocket(35000);
-        Boolean running = true;
         while (running) {
             System.out.println("Ready to receive...");
             Socket clientSocket = serverSocket.accept();
 
-            PrintWriter out = new PrintWriter(
-                    clientSocket.getOutputStream(), true);
+            OutputStream out = clientSocket.getOutputStream();
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
 
@@ -23,6 +28,7 @@ public class HttpServer {
             while ((inputLine = in.readLine()) != null) {
                 if (isFirstLine) {
                     URIstr = inputLine.split(" ")[1];
+
                     isFirstLine = false;
                 }
 
@@ -32,83 +38,85 @@ public class HttpServer {
                 }
             }
 
-            String output = "";
-
-            if (URIstr.startsWith("/hello")) {
-                URI reqURI = new URI(URIstr);
-                String queryStr = reqURI.getQuery();
-
-                output = "HTTP/1.1 200 OK\r\n"
-                        + "Content-Type: application/json\r\n\r\n"
-                        + "{\"mensaje\":\"Hello World\"" + queryStr + "\"}";
-
-            } else if (URIstr.startsWith("/shutdown")){
-                running = false;
-                output = "HTTP/1.1 200 OK\r\n"
-                        + "Content-Type: application/json\r\n\r\n"
-                        + "{\"mensaje\":\"Goodbye World\"}";
-            }
-
-            else {
-
-                output = "HTTP/1.1 200 OK\r\n"
-                        + "Content-Type: text/html\r\n\r\n"
-                        + "<!DOCTYPE html>\n"
-                        + "<html>\n"
-                        + "    <head>\n"
-                        + "        <title>Form Example</title>\n"
-                        + "        <meta charset=\"UTF-8\">\n"
-                        + "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-                        + "    </head>\n"
-                        + "    <body>\n"
-                        + "        <h1>Form with GET</h1>\n"
-                        + "        <form action=\"/hello\">\n"
-                        + "            <label for=\"name\">Name:</label><br>\n"
-                        + "            <input type=\"text\" id=\"name\" name=\"name\" value=\"John\"><br><br>\n"
-                        + "            <input type=\"button\" value=\"Submit\" onclick=\"loadGetMsg()\">\n"
-                        + "        </form> \n"
-                        + "        <div id=\"getrespmsg\"></div>\n"
-                        + "\n"
-                        + "        <script>\n"
-                        + "            function loadGetMsg() {\n"
-                        + "                let nameVar = document.getElementById(\"name\").value;\n"
-                        + "                const xhttp = new XMLHttpRequest();\n"
-                        + "                xhttp.onload = function() {\n"
-                        + "                    document.getElementById(\"getrespmsg\").innerHTML =\n"
-                        + "                    this.responseText;\n"
-                        + "                }\n"
-                        + "                xhttp.open(\"GET\", \"/hello?name=\"+nameVar);\n"
-                        + "                xhttp.send();\n"
-                        + "            }\n"
-                        + "        </script>\n"
-                        + "\n"
-                        + "        <h1>Form with POST</h1>\n"
-                        + "        <form action=\"/hellopost\">\n"
-                        + "            <label for=\"postname\">Name:</label><br>\n"
-                        + "            <input type=\"text\" id=\"postname\" name=\"name\" value=\"John\"><br><br>\n"
-                        + "            <input type=\"button\" value=\"Submit\" onclick=\"loadPostMsg(postname)\">\n"
-                        + "        </form>\n"
-                        + "        \n"
-                        + "        <div id=\"postrespmsg\"></div>\n"
-                        + "        \n"
-                        + "        <script>\n"
-                        + "            function loadPostMsg(name){\n"
-                        + "                let url = \"/hellopost?name=\" + name.value;\n"
-                        + "\n"
-                        + "                fetch (url, {method: 'POST'})\n"
-                        + "                    .then(x => x.text())\n"
-                        + "                    .then(y => document.getElementById(\"postrespmsg\").innerHTML = y);\n"
-                        + "            }\n"
-                        + "        </script>\n"
-                        + "    </body>\n"
-                        + "</html>";
-            }
-            out.println(output);
+            Map<String,byte[]> response = output(URIstr);
+            out.write(response.get("headers"));
+            out.write(response.get("body"));
+            out.flush();
 
             out.close();
             in.close();
             clientSocket.close();
         }
         serverSocket.close();
+    }
+
+    private static byte[] getFileBytes(String path) throws IOException {
+        Path basePath = Paths.get("src/main/resources/public").toAbsolutePath().normalize();
+        Path pathFile = basePath.resolve("." + path).normalize();
+
+        if (!pathFile.startsWith(basePath) || !Files.exists(pathFile) || Files.isDirectory(pathFile)) {
+            throw new FileNotFoundException();
+        }
+        return Files.readAllBytes(pathFile);
+    }
+
+    private static String getFileType(String path){
+        if(path.endsWith(".js")) return "application/javascript";
+        else if(path.endsWith(".css")) return "text/css";
+        else if(path.endsWith(".png")) return "image/png";
+        else if(path.endsWith(".jpg")) return "image/jpeg";
+        else return "text/html";
+    }
+
+    private static byte[] buildHeaders(String path, int contentLength){
+        String output = "";
+        String end = "\r\n\r\n";
+        if(path.startsWith("/shutdown")) {
+            running = false;
+            output = "HTTP/1.1 200 OK\r\n"
+                    + "Content-Type: application/json\r\n"
+                    + "Content-Length: " + contentLength + end;
+        } else if(path.equals("/notFound")) {
+            output = "HTTP/1.1 404 Not Found\r\n"
+                    + "Content-Type: application/json\r\n"
+                    + "Content-Length: " + contentLength + end;
+        } else {
+            output = "HTTP/1.1 200 OK\r\n"
+                    + "Content-Type: " + getFileType(path) + "\r\n"
+                    + "Content-Length: " + contentLength + end;
+        }
+        return output.getBytes(StandardCharsets.UTF_8);
+
+    }
+
+
+    private static Map<String, byte[]> output(String path) throws URISyntaxException, IOException {
+        String cleanPath = new URI(path).getPath();
+        Map<String, byte[]> response = new HashMap<>();
+        byte[] headers;
+        byte[] body;
+        String strBody;
+        try{
+            if (cleanPath.startsWith("/shutdown")){
+                strBody = "{\"mensaje\":\"Goodbye World\"}";
+                body = strBody.getBytes(StandardCharsets.UTF_8);
+
+            }else if(cleanPath.equals("/")){
+                cleanPath = "/index.html";
+                body = getFileBytes(cleanPath);
+            } else {
+                body = getFileBytes(cleanPath);
+            }
+            headers = buildHeaders(cleanPath,body.length);
+        } catch (FileNotFoundException e){
+            strBody = "{\"mensaje\":\"file not found: " + cleanPath + "\"}";
+            body = strBody.getBytes(StandardCharsets.UTF_8);
+            headers = buildHeaders("/notFound",body.length);
+        }
+
+        response.put("headers", headers);
+        response.put("body", body);
+        return response;
+
     }
 }
