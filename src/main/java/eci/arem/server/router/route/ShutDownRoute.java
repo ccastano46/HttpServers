@@ -12,7 +12,7 @@ import java.util.Map;
 public class ShutDownRoute implements Route{
 
     private final Runnable onShutdown;
-    private static final Logger logger = LoggerFactory.getLogger(HttpRequest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ShutDownRoute.class);
 
 
     public ShutDownRoute(Runnable onShutdown) {

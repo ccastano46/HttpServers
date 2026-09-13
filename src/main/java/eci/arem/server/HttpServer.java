@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class HttpServer {
     private static boolean running = true;
-    private static final Logger logger = LoggerFactory.getLogger(HttpRequest.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     public static void main(String[] args) throws IOException, URISyntaxException {
         FileResolver fileResolver = new FileResolver("src/main/resources/public");
@@ -20,6 +20,10 @@ public class HttpServer {
         List<Route> routes = List.of(
                 new BadMethodRoute(),
                 new ShutDownRoute(() -> HttpServer.running = false),
+                new GreetingRoute(),
+                new SquareRoute(),
+                new ServerTimeRoute(),
+                new HealthRoute(),
                 new StaticFileRoute(fileResolver),
                 new BadRequestRoute()
         );
