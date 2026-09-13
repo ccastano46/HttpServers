@@ -30,7 +30,7 @@ public class StaticFileRoute implements Route{
             body = fileResolver.getFileBytes(path);
             headers = HttpHeaderFactory.ok(FileResolver.getFileType(path),body.length);
         } catch (FileNotFoundException e){
-            String strBody = "{\"mensaje\":\"file not found: " + path + "\"}";
+            String strBody = "{\"mensaje\":\"file not found: " + Route.escapeJson(path) + "\"}";
             body = strBody.getBytes(StandardCharsets.UTF_8);
             headers = HttpHeaderFactory.notFound(body.length);
         }
