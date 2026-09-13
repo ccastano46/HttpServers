@@ -28,7 +28,9 @@ public class HttpServer {
                 new BadRequestRoute()
         );
         Router router = new Router(routes);
-        ServerSocket serverSocket = new ServerSocket(35000);
+        String portEnv = System.getenv("PORT");
+        int port = portEnv != null ? Integer.parseInt(portEnv) : 35000;
+        ServerSocket serverSocket = new ServerSocket(port);
 
         while (running) {
             logger.info("Ready to receive...");
@@ -50,6 +52,5 @@ public class HttpServer {
         }
         serverSocket.close();
     }
-
 
 }
