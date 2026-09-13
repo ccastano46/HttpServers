@@ -23,7 +23,7 @@ public class StaticFileRoute implements Route{
 
     @Override
     public Map<String, byte[]> handle(HttpRequest request) throws IOException {
-        String path = request.getPath().equals("/") ? "/index.html" : request.getPath();
+        String path = request.getPath().equals("/") ? "/async-client.html" : request.getPath();
         byte[] body;
         byte[] headers;
         try{
