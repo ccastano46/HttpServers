@@ -15,7 +15,9 @@ public class HttpServer {
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        FileResolver fileResolver = new FileResolver("public");
+        //To run locally (IDE) uncomment this line
+        //FileResolver fileResolver = new FileResolver("src/main/resources/public");
+        FileResolver fileResolver = new FileResolver("public"); //Production
 
         List<Route> routes = List.of(
                 new BadMethodRoute(),
