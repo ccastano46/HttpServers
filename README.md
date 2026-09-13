@@ -18,7 +18,7 @@ The system can be understood as a **one-lane post office**. The browser is a cus
 
 The following UML diagram represents the main classes and relationships in the server architecture.
 
-![HttpServers architecture diagram](docs/images/architecture.png)
+![HttpServers architecture diagram](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL2FyY2hpdGVjdHVyZQ.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDJGeVkyaHBkR1ZqZEhWeVpRLnBuZyIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5MDgxMjgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEQCIEXL3CYJE7pXvVcUXkhirA8hyGOh3g2BvufCI3N8G1VHAiA6eq4NhoLhYNofTXcDdQ8V8XR1tVvMYKaFU6N4d8VnEA__)
 ### Component responsibilities
 
 | Component | Responsibility | Current implementation |
@@ -185,11 +185,12 @@ cd target/
 PORT=8080 java -jar HttpServers-1.0-SNAPSHOT.jar
 ```
 ## How to use the application
-The path `/` returns the static HTML file `async-client.html`, which is the browser client.
 
-![landingPage.png](docs/images/landingPage.png)
+The path `/` returns the static HTML file `async-client.html`, which provides the browser client.
 
-There, you will find four cards with the following services:
+![Landing page](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL2xhbmRpbmdQYWdl.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDJ4aGJtUnBibWRRWVdkbC5wbmciLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTA4MTI4MDB9fX1dfQ__&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIHxaRTB4cHyNv5qXBPBEMzNqgAJFy24aCQnHlV49txp~AiEA1zCqFO5nayK01tkgb2TIqDpjZEVkCWn42ZIfUGVmj6k_)
+
+The page contains four cards for the following services:
 
 | Method | URL |
 |---|---|
@@ -199,54 +200,54 @@ There, you will find four cards with the following services:
 | `GET` | `/health` |
 | `GET` | `/shutdown` |
 
-Those resquests are asynchronous, so the browser client will not reload the page while the server is processing the request.
+These requests are asynchronous, so the browser client does not reload the page while the server processes a request.
 
-![landingPage2.png](docs/images/landingPage2.png)
+![Service cards](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL2xhbmRpbmdQYWdlMg.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDJ4aGJtUnBibWRRWVdkbE1nLnBuZyIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5MDgxMjgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIBQOVZKVoRou~cbLdmn5tBk0F21dNjXr0uds4IFr8iryAiEAruJ~HK23cOW5~b-L9GMsSARsE8A4pWH7WjbeRqYIQCA_)
 
-Also, it contains tos spaces for the results and errors, so if I do a bad request, it will show me the error.
+The interface also contains separate areas for successful results and errors. When an invalid request is submitted, the corresponding message is displayed in the error area.
 
-![mesages.png](docs/images/mesages.png)
+![Results and error messages](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL21lc2FnZXM.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDIxbGMyRm5aWE0ucG5nIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkwODEyODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQDkuyXDpuWGEEJMBZCjlBPMbTuS0XaV~OfMrgy8p~-MrQIhAIOFBEeHT5wQ1gUUCIWFy8EifXZstO3lM8p4Fu8s7Mp~)
 
-Nevertheless, you can explore other services, as `/index.html`
+The server also provides other static resources, such as `/index.html`.
 
-![index.png](docs/images/index.png)
+![Static index page](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL2luZGV4.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDJsdVpHVjQucG5nIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkwODEyODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQDIAM7vHqL6tHg9n0zhrh~NPSE-0~0xxOXZUFrmkFCFUgIhAIejICOZYFE-HE82xxfeMKRQry3P8fQn2WajsuOBIpdq)
 
 ## AWS Deployment
 
 ### Create an EC2 instance
 
-The deployment target is an **Amazon EC2 instance**. To launh it, in AWS console, go to **EC2** > **Instances** > **Launch Instance**.
+The deployment target is an **Amazon EC2 instance** [2]. To launch an instance, open the AWS Console and navigate to **EC2** > **Instances** > **Launch Instance**.
 
-Select a name for the instances and the default **Amazon Linux** AMI
+Select a name for the instance and choose the default **Amazon Linux** AMI.
 
-![instanceName.jpeg](docs/images/instanceName.jpeg)
+![EC2 instance name and AMI](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL2luc3RhbmNlTmFtZQ.jpeg?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDJsdWMzUmhibU5sVG1GdFpRLmpwZWciLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTA4MTI4MDB9fX1dfQ__&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQCIVCz7Li3jrqazLSKFiIKfpnP3~H1d8Hc5bhrG1~obmwIhAL3WeqIumrYqFNNUSh0Lkwkjn~ESP0gjqSHmRQeiXYD3)
 
-Also, select the default **t3.micro** instance type and key pair to connect to the instance.
+Select the default **t3.micro** instance type and a key pair to connect to the instance.
 
-![instanceName.jpeg](docs/images/type.jpeg)
+![EC2 instance type](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL3R5cGU.jpeg?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDNSNWNHVS5qcGVnIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkwODEyODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIQCfZHNV156UEWNCsghj1kQKyX2XJqWRlbpxgLk4sB3m6QIgItzo3O282WlHh34VNgo6T4aQbPXxRf~An60EshPCDk4_)
 
-Select the default VPC and security group, then click **Launch Instance**.
+Select the default VPC and security group, and then select **Launch Instance**.
 
-![network.jpeg](docs/images/network.jpeg)
+![EC2 network configuration](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL25ldHdvcms.jpeg?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDI1bGRIZHZjbXMuanBlZyIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5MDgxMjgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEQCICLpp~a~4qQy48LXRUJR6tXO46FcbeJ5~Hdj1G1fzalNAiAw2POhhh-BztcV2T4Vg-606mFXdQyPjKfETmIu5xMvwg__)
 
-### Transfer artifact
+### Transfer the artifact
 
-We are going to copy our local artifact to the instance using **Secure Copy** `scp` protocol.
-
-Inside the instance, we move to target directory and copy the artifact and `public/` directory.
+The local artifact is copied to the instance using the Secure Copy Protocol (`scp`). From the local `target/` directory, copy the executable JAR and the `public/` directory to the selected remote directory:
 
 ```bash
 cd target/
-scp -i key_pair.pem HttpServers-1.0-SNAPSHOT.jar <ssh-userr>@<public-ip>:[remote-directory]
-scp -i key_pair.pem -r public/ <ssh-userr>@<public-ip>:[remote-directory]
+scp -i key_pair.pem HttpServers-1.0-SNAPSHOT.jar <ssh-user>@<public-ip>:[remote-directory]
+scp -i key_pair.pem -r public/ <ssh-user>@<public-ip>:[remote-directory]
 ```
-login to your instance with ssh
+
+Connect to the instance using SSH:
 
 ```bash
 chmod 400 key_pair.pem
-ssh -i key_pair.pem <ssh-userr>@<public-ip>
+ssh -i key_pair.pem <ssh-user>@<public-ip>
 ```
-Once you are logged in an in the path of your artifact, create a new directory and move your files there
+
+Once logged in, move to the directory that contains the transferred files, create an `app/` directory, and move both artifacts into it:
 
 ```bash
 mkdir app
@@ -255,17 +256,25 @@ mv public app/
 ```
 
 ### Run the server
-First, we need to configure the Security Group to allow incoming traffic on port 8080, or the one you desire.
-Then, as we run the artifact, same as we do locally,
+
+First, configure the security group to allow incoming traffic on port `8080`, or on the port selected for the deployment. Then start the application from the `app/` directory:
 
 ```bash
 cd app/
 PORT=8080 java -jar HttpServers-1.0-SNAPSHOT.jar
 ```
-Now, you can access the server from your browser.
+
+The application can then be accessed from a browser at:
+
 ```text
 http://<public-ip>:8080/
 ```
-![remote.png](docs/images/remote.png)
 
+![Remote application](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL3JlbW90ZQ.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDNKbGJXOTBaUS5wbmciLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTA4MTI4MDB9fX1dfQ__&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEQCIF4d4E-Br8JipdzlXWtqAaFo0fFwP9LiINzhFGY~Zc5GAiA8RDyVBChyr-9cGo7DWOCCox-sUMlW3aY06Po~F4aaSQ__)
+
+## References
+
+[1]: https://github.com/ccastano46/HttpServers "HttpServers source repository"
+
+[2]: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html "Get started with Amazon EC2"
 
