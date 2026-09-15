@@ -94,15 +94,17 @@ An executable JAR is created with `eci.arem.server.HttpServer` as its `Main-Clas
 > **Important:** the JAR should be executed inside the `app/` directory because for prod env the `FileResolver` basePath is `public`.
 ## Project structure
 
-The repository follows the standard Maven layout. The Java server code is under `src/main/java`, and the resources served to browsers are under `src/main/resources/public`. There is currently no `src/test` directory and no automated unit or integration test suite in the repository. Request testing is planned as manual testing through Postman and a browser.
+The repository follows the standard Maven layout. The Java server code is under `src/main/java`, and the resources served to browsers are under `src/main/resources/public`. 
 
 ```text
 HttpServers/
 ├── .gitignore
 ├── README.md
 ├── docs/
+    └── HTTPServer.postman_collection.json
 │   └── images/
         └── architecture.png
+        └── tests/
 ├── pom.xml
 └── src/
     └── main/
@@ -272,9 +274,149 @@ http://<public-ip>:8080/
 
 ![Remote application](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL3JlbW90ZQ.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDNKbGJXOTBaUS5wbmciLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTA4MTI4MDB9fX1dfQ__&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEQCIF4d4E-Br8JipdzlXWtqAaFo0fFwP9LiINzhFGY~Zc5GAiA8RDyVBChyr-9cGo7DWOCCox-sUMlW3aY06Po~F4aaSQ__)
 
-## References
+## Testing
+The application can be tested making GET requests to the server. This requests can be made using a browser or postman, or any other HTTP client.
 
-[1]: https://github.com/ccastano46/HttpServers "HttpServers source repository"
+In this case, we are going to do the test locally, but the results are going the same if you do the requests to the EC2 instance.
 
-[2]: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html "Get started with Amazon EC2"
+> You can find the tests in the `docs/tests/HTTPServer.postman_collection.json` file.
+### Sucessful requests
 
+1. Greeting with a valid name:
+    ```text
+    http://localhost:35000/greeting?name=Camilo
+    ```
+   Should return:
+    ```json
+    {"mensaje":"Hello, Camilo!"}
+   ```
+   ![test1.png](docs/images/tests/test1.png)
+
+2. Greeting with spaces and UTF-8 characters:
+    ```text
+    http://localhost:35000/greeting?name=Ana%20Mar%C3%ADa%20Jos%C3%A9
+    ```
+   Should return:
+    ```json
+    {"mensaje":"Hello, Ana María José!"}
+   ```
+   ![test2.png](docs/images/tests/test2.png)
+3. square of an integer number:
+    ```text
+    http://localhost:35000/square?value=5
+    ```
+   Should return:
+    ```json
+    {
+      "value": 5.0,
+      "square": 25.0
+   }
+   ```
+   ![test3.png](docs/images/tests/test3.png)
+4. square of a negative decimal:
+    ```text
+    http://localhost:35000/square?value=-2.5
+    ```
+   Should return:
+    ```json
+    {
+      "value": -2.5,
+      "square": 6.25
+   }
+   ```
+   ![test4.png](docs/images/tests/test4.png)
+5. Square of cero:
+    ```text
+    http://localhost:35000/square?value=0
+    ```
+   Should return:
+    ```json
+    {
+      "value": 0,
+      "square": 0
+   }
+   ```
+   ![test5.png](docs/images/tests/test5.png)
+6. Server Time:
+ ```text
+ http://localhost:35000/server-time
+ ```
+Should return:
+ ```json
+{"serverTime": "...."}
+  ```
+![test6.png](docs/images/tests/test6.png)
+7. Server Health:
+ ```text
+ http://localhost:35000/health
+ ```
+Should return:
+ ```json
+{
+   "status": "OK"
+}
+  ```
+![test7.png](docs/images/tests/test7.png)
+8. Static file:
+ ```text
+ http://localhost:35000/index.html
+ ```
+
+![test8.png](docs/images/tests/test8.png)
+
+### Failed requests
+1. Greeting without a name:
+    ```text
+    http://localhost:35000/greeting
+    ```
+   Should return:
+    ```json
+    {
+      "mensaje": "Bad request: missing 'name' parameter"
+   }
+   ```
+   ![test9.png](docs/images/tests/test9.png)
+2. Greeting with empty name:
+    ```text
+    http://localhost:35000/greeting?name=
+    ```
+   Should return:
+    ```json
+    {
+      "mensaje": "Bad request: missing 'name' parameter"
+   }
+   ```
+   ![test10.png](docs/images/tests/test10.png)
+3. Square with a none numerical value:
+    ```text
+    http://localhost:35000/square?value=abc
+    ```
+   Should return:
+    ```json
+    {
+     "mensaje": "Bad request: missing or invalid 'value' parameter"
+   }
+   ```
+   ![test11.png](docs/images/tests/test11.png)
+4. Invalid method
+   ```text
+    POST http://localhost:35000/square?value=abc
+    ```
+   Should return:
+    ```json
+    {
+      "mensaje": "Bad request: method not allowed"
+   }
+   ```
+   ![test12.png](docs/images/tests/test12.png)
+5. Non-existent service
+   ```text
+    http://localhost:35000/historial
+    ```
+   Should return:
+    ```json
+    {
+      "mensaje": "Bad request: /historial"
+   }
+   ```
+   ![test13.png](docs/images/tests/test13.png)
