@@ -214,6 +214,10 @@ The server also provides other static resources, such as `/index.html`.
 
 ![Static index page](https://private-us-east-1.manuscdn.com/sessionFile/UI5RVF4nlAUfX5Z3gjDCEa/sandbox/odzCJJkkWZjiydoUlBiGv5-images_1789319566870_na1fn_L2hvbWUvdWJ1bnR1L0h0dHBTZXJ2ZXJzL2RvY3MvaW1hZ2VzL2luZGV4.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVUk1UlZGNG5sQVVmWDVaM2dqRENFYS9zYW5kYm94L29kekNKSmtrV1pqaXlkb1VsQmlHdjUtaW1hZ2VzXzE3ODkzMTk1NjY4NzBfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwwaDBkSEJUWlhKMlpYSnpMMlJ2WTNNdmFXMWhaMlZ6TDJsdVpHVjQucG5nIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkwODEyODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQDIAM7vHqL6tHg9n0zhrh~NPSE-0~0xxOXZUFrmkFCFUgIhAIejICOZYFE-HE82xxfeMKRQry3P8fQn2WajsuOBIpdq)
 
+when you deserie to shutdown the server, send a request to `/shutdown` and the server will shutdown.
+```text
+   http://localhost:35000/shutdown
+```
 ## AWS Deployment
 
 ### Create an EC2 instance
